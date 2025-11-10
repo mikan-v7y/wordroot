@@ -2,6 +2,9 @@
   "name": "wordroot",
   "version": "1.0.0",
   "type": "module",
+  "bin": {
+    "wordroot": "./dist/bin/wordroot.js"
+  },
   "scripts": {
     "build": "tsc",
     "wordroot": "node dist/bin/wordroot.js",
