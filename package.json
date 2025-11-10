@@ -5,6 +5,9 @@
   "bin": {
     "wordroot": "./dist/bin/wordroot.js"
   },
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsc",
     "wordroot": "node dist/bin/wordroot.js",
