@@ -1,0 +1,34 @@
+# Wordroot
+
+ターミナル上で、英単語の意味と語源を簡単に調べられる CLI ツールです。
+
+## 使用方法
+
+1. Wordroot をインストールします:
+
+```bash
+$ npm install wordroot
+```
+
+2. `.env` ファイルを作成します:
+
+```bash
+$ touch .env
+```
+
+3. OpenAI の API キーを設定します:
+
+```env
+OPENAI_API_KEY='あなたのAPIキー'
+```
+
+4. CLI を実行します:
+
+```bash
+$ npx wordroot company
+```
+
+```bash
+意味: 会社、団体、仲間、同行者など、人々の集まりやビジネスを指す言葉。
+語源: ラテン語の「companio」（共に食事をする人）から派生し、「com-」（共に）と「panis」（パン）から成り立っています。
+```
