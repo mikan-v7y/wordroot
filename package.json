@@ -1,5 +1,5 @@
 {
-  "name": "wordroot",
+  "name": "@mikan-v7y/wordroot",
   "version": "1.0.0",
   "type": "module",
   "bin": {
