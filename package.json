@@ -1,6 +1,6 @@
 {
   "name": "@mikan-v7y/wordroot",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "type": "module",
   "bin": {
     "wordroot": "./dist/bin/wordroot.js"
