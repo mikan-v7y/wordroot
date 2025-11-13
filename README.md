@@ -1,6 +1,6 @@
 # Wordroot
 
-ターミナル上で、英単語の意味と語源を簡単に調べられる CLI ツールです。
+英単語の意味と語源をターミナル上で簡単に調べられる CLI ツールです。
 
 ![Wordroot の実行例](https://raw.githubusercontent.com/mikan-v7y/wordroot/wordroot-ts/usage-video.gif)
 
