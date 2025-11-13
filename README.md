@@ -2,7 +2,7 @@
 
 ターミナル上で、英単語の意味と語源を簡単に調べられる CLI ツールです。
 
-![Wordroot の実行例](./CleanShot-2025-11-13-at-16.03.24)
+![Wordroot の実行例](https://raw.githubusercontent.com/mikan-v7y/wordroot/wordroot-ts/CleanShot%202025-11-13%20at%2016.03.24.gif)
 
 ## 使用方法
 
