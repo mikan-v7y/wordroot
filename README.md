@@ -6,28 +6,22 @@
 
 ## 使用方法
 
-1. Wordroot をインストールします:
-
-```bash
-$ npm install wordroot
-```
-
-2. `.env` ファイルを作成します:
+1. `.env` ファイルを作成します:
 
 ```bash
 $ touch .env
 ```
 
-3. OpenAI の API キーを設定します:
+2. OpenAI の API キーを設定します:
 
 ```env
 OPENAI_API_KEY='あなたのAPIキー'
 ```
 
-4. CLI を実行します:
+3. CLI を実行します:
 
 ```bash
-$ npx wordroot company
+$ npx @mikan-v7y/wordroot company
 ```
 
 ```bash
