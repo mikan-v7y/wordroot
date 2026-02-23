@@ -4,15 +4,15 @@ import dotenv from "dotenv";
 dotenv.config({ quiet: true });
 
 export default async function fetchWordInfo(word: string): Promise<string> {
-  const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY,
-  });
+  const apiKey = process.env.OPENAI_API_KEY;
 
-  if (!openai.apiKey) {
+  if (!apiKey) {
     throw new Error(
       "OpenAIのAPIキーが設定されていません。.envファイルを確認してください。",
     );
   }
+
+  const openai = new OpenAI({ apiKey });
 
   const prompt = `
 次の英単語の「意味」と「語源」を日本語で簡潔に説明してください。
