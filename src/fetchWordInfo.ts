@@ -1,5 +1,7 @@
 import OpenAI from "openai";
 import dotenv from "dotenv";
+import { z } from "zod";
+import { zodTextFormat } from "openai/helpers/zod";
 
 dotenv.config({ quiet: true });
 
@@ -14,32 +16,32 @@ export default async function fetchWordInfo(word: string): Promise<string> {
 
   const openai = new OpenAI({ apiKey });
 
-  const prompt = `
-次の英単語の「意味」と「語源」を日本語で簡潔に説明してください。
-フォーマット:
-意味: ...
-語源: ...
-
-英単語: ${word}
-`;
-
-  const response = await openai.chat.completions.create({
-    model: "gpt-4o-mini",
-    messages: [
-      {
-        role: "user",
-        content: prompt,
-      },
-    ],
+  const WordInfoSchema = z.object({
+    meaning: z.string(),
+    etymology: z.string(),
   });
 
-  const message = response.choices[0]?.message?.content?.trim();
+  const response = await openai.responses.parse({
+    model: "gpt-4o-mini",
+    input: [
+      {
+        role: "user",
+        content: `次の英単語の「意味」と「語源」を日本語で簡潔に説明してください。\n英単語: ${word}`,
+      },
+    ],
+    text: {
+      format: zodTextFormat(WordInfoSchema, "word_info"),
+    },
+  });
 
-  if (!message) {
-    throw new Error("AIからの応答を取得できませんでした。");
+  try {
+    const wordInfo = WordInfoSchema.parse(response.output_parsed);
+
+    const formattedText = `意味: ${wordInfo.meaning}\n語源: ${wordInfo.etymology}`;
+
+    return formattedText.trim();
+  } catch (err) {
+    console.error("WordInfoの解析に失敗しました:", err);
+    return "単語情報の取得に失敗しました。";
   }
-
-  const formattedText = message.replace(/\n\s*\n語源:/, "\n語源:");
-
-  return formattedText;
 }
