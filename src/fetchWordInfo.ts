@@ -39,7 +39,7 @@ export default async function fetchWordInfo(word: string): Promise<string> {
 
     const formattedText = `意味: ${wordInfo.meaning}\n語源: ${wordInfo.etymology}`;
 
-    return formattedText.trim();
+    return formattedText;
   } catch (err) {
     console.error("WordInfoの解析に失敗しました:", err);
     return "単語情報の取得に失敗しました。";
