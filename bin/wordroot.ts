@@ -21,12 +21,8 @@ async function main(): Promise<void> {
     console.log(`${word} の意味と語源を検索中...\n`);
     const result: string = await fetchWordInfo(word);
     console.log(result);
-  } catch (error: unknown) {
-    if (error instanceof Error) {
-      console.error("エラーが発生しました:", error.message);
-    } else {
-      console.error("不明なエラーが発生しました。");
-    }
+  } catch (err) {
+    console.error("エラーが発生しました:", err);
     process.exit(1);
   }
 }
