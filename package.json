@@ -1,7 +1,13 @@
 {
-  "name": "wordroot",
-  "version": "1.0.0",
+  "name": "@mikan-v7y/wordroot",
+  "version": "1.0.6",
   "type": "module",
+  "bin": {
+    "wordroot": "./dist/bin/wordroot.js"
+  },
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsc",
     "wordroot": "node dist/bin/wordroot.js",
@@ -11,11 +17,14 @@
   },
   "dependencies": {
     "dotenv": "^17.2.3",
-    "openai": "^6.8.1"
+    "openai": "^6.8.1",
+    "zod": "^4.3.6"
   },
   "devDependencies": {
     "@eslint/js": "^9.38.0",
     "@types/jest": "^30.0.0",
+    "@typescript-eslint/eslint-plugin": "^8.56.0",
+    "@typescript-eslint/parser": "^8.56.0",
     "eslint": "^9.38.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.4",
