@@ -3,59 +3,55 @@ import OpenAI from "openai";
 
 jest.mock("openai");
 
-const mockCreate = jest.fn();
+const mockParse = jest.fn();
 
 beforeEach(() => {
   jest.clearAllMocks();
+
   (OpenAI as unknown as jest.Mock).mockImplementation(() => ({
-    apiKey: process.env.OPENAI_API_KEY_TEST,
-    chat: {
-      completions: {
-        create: mockCreate,
-      },
+    responses: {
+      parse: mockParse,
     },
   }));
+
+  process.env.OPENAI_API_KEY = "dummy";
 });
 
 describe("fetchWordInfo", () => {
-  test("OpenAI APIキーが設定されていない場合、エラーを返す", async () => {
-    delete process.env.OPENAI_API_KEY_TEST;
+  test("APIキーが未設定の場合、エラーを返す", async () => {
+    delete process.env.OPENAI_API_KEY;
 
     await expect(fetchWordInfo("fjord")).rejects.toThrow(
       "OpenAIのAPIキーが設定されていません。.envファイルを確認してください。",
     );
   });
 
-  test("AIから正常な応答を取得できた場合、空行を削除し、整形された文字列を返す", async () => {
-    process.env.OPENAI_API_KEY_TEST = "dummy";
-
-    mockCreate.mockResolvedValueOnce({
-      choices: [
-        {
-          message: {
-            content:
-              "意味: フィヨルドは氷河によって形成された入り江。\n\n語源: ノルウェー語 fjord（フィヨール）から来ており、もとは古ノルド語 fjörðr に由来します。",
-          },
-        },
-      ],
+  test("正常に英単語情報を取得できた場合、文字列を返す", async () => {
+    mockParse.mockResolvedValueOnce({
+      output_parsed: {
+        meaning: "フィヨルドは氷河によって形成された入り江。",
+        etymology:
+          "ノルウェー語 fjord から来ており、古ノルド語 fjörðr に由来。",
+      },
     });
 
     const result = await fetchWordInfo("fjord");
 
     expect(result).toBe(
-      "意味: フィヨルドは氷河によって形成された入り江。\n語源: ノルウェー語 fjord（フィヨール）から来ており、もとは古ノルド語 fjörðr に由来します。",
+      "意味: フィヨルドは氷河によって形成された入り江。\n語源: ノルウェー語 fjord から来ており、古ノルド語 fjörðr に由来。",
     );
   });
 
-  test("AIの応答が空の場合、エラーを返す", async () => {
-    process.env.OPENAI_API_KEY_TEST = "dummy_key";
-
-    mockCreate.mockResolvedValueOnce({
-      choices: [{ message: { content: "" } }],
+  test("Zodパースに失敗した場合、エラーメッセージを返す", async () => {
+    mockParse.mockResolvedValueOnce({
+      output_parsed: {
+        meaning: 123,
+        etymology: null,
+      },
     });
 
-    await expect(fetchWordInfo("fjord")).rejects.toThrow(
-      "AIからの応答を取得できませんでした。",
-    );
+    const result = await fetchWordInfo("fjord");
+
+    expect(result).toBe("単語情報の取得に失敗しました。");
   });
 });
