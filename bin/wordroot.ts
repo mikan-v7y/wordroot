@@ -1,5 +1,7 @@
 #!/usr/bin/env node
+import createOpenAI from "../src/createOpenAI.js";
 import fetchWordInfo from "../src/fetchWordInfo.js";
+
 import dotenv from "dotenv";
 
 dotenv.config({ path: ".env", quiet: true });
@@ -17,9 +19,11 @@ async function main(): Promise<void> {
     process.exit(1);
   }
 
+  const openai = createOpenAI();
+
   try {
     console.log(`${word} の意味と語源を検索中...\n`);
-    const result: string = await fetchWordInfo(word);
+    const result: string = await fetchWordInfo(word, openai);
     console.log(result);
   } catch (err) {
     console.error("エラーが発生しました:", err);

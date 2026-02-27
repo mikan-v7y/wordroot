@@ -1,21 +1,11 @@
 import OpenAI from "openai";
-import dotenv from "dotenv";
 import { z } from "zod";
 import { zodTextFormat } from "openai/helpers/zod";
 
-dotenv.config({ quiet: true });
-
-export default async function fetchWordInfo(word: string): Promise<string> {
-  const apiKey = process.env.OPENAI_API_KEY;
-
-  if (!apiKey) {
-    throw new Error(
-      "OpenAIのAPIキーが設定されていません。.envファイルを確認してください。",
-    );
-  }
-
-  const openai = new OpenAI({ apiKey });
-
+export default async function fetchWordInfo(
+  word: string,
+  openai: OpenAI,
+): Promise<string> {
   const WordInfoSchema = z.object({
     meaning: z.string(),
     etymology: z.string(),

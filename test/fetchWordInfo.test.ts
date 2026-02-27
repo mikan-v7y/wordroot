@@ -1,31 +1,19 @@
 import fetchWordInfo from "../src/fetchWordInfo";
 import OpenAI from "openai";
 
-jest.mock("openai");
-
 const mockParse = jest.fn();
+
+const mockOpenAI = {
+  responses: {
+    parse: mockParse,
+  },
+} as unknown as OpenAI;
 
 beforeEach(() => {
   jest.clearAllMocks();
-
-  (OpenAI as unknown as jest.Mock).mockImplementation(() => ({
-    responses: {
-      parse: mockParse,
-    },
-  }));
-
-  process.env.OPENAI_API_KEY = "dummy";
 });
 
 describe("fetchWordInfo", () => {
-  test("APIキーが未設定の場合、エラーを返す", async () => {
-    delete process.env.OPENAI_API_KEY;
-
-    await expect(fetchWordInfo("fjord")).rejects.toThrow(
-      "OpenAIのAPIキーが設定されていません。.envファイルを確認してください。",
-    );
-  });
-
   test("正常に英単語情報を取得できた場合、文字列を返す", async () => {
     mockParse.mockResolvedValueOnce({
       output_parsed: {
@@ -35,7 +23,7 @@ describe("fetchWordInfo", () => {
       },
     });
 
-    const result = await fetchWordInfo("fjord");
+    const result = await fetchWordInfo("fjord", mockOpenAI);
 
     expect(result).toBe(
       "意味: フィヨルドは氷河によって形成された入り江。\n語源: ノルウェー語 fjord から来ており、古ノルド語 fjörðr に由来。",
@@ -50,7 +38,7 @@ describe("fetchWordInfo", () => {
       },
     });
 
-    const result = await fetchWordInfo("fjord");
+    const result = await fetchWordInfo("fjord", mockOpenAI);
 
     expect(result).toBe("単語情報の取得に失敗しました。");
   });
